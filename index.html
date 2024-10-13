@@ -1013,22 +1013,32 @@ function generateCommitteeQuestions(applicant) {
 
     console.log('Generated Question Keys:', questions);
 
-  let output = '';
+let output = '';
 // Loop through the generated questions and check if the applicant answered them
 questions.forEach((q, index) => {
-    console.log(`Checking question: ${q}, Value: ${applicant[q]}`);
-    if (applicant[q]) {
-        // Explicitly convert the answer to a string to prevent automatic date conversion
-        const answer = String(applicant[q]);
-
-        output += `
-            <div class="mb-4">
-                <p class="font-semibold">Question ${index + 1}:</p>
-                <p class="whitespace-pre-wrap">${answer}</p>
-            </div>
-        `;
+    let answer = applicant[q];
+    
+    // Check if the value is being interpreted as a date (for example, 8/10)
+    if (Object.prototype.toString.call(answer) === '[object Date]') {
+        // If it's a date, convert it back to the original format (e.g., "8/10")
+        const originalFormat = applicant[q].toLocaleDateString('en-US', {
+            day: 'numeric', month: 'numeric', year: 'numeric'
+        });
+        answer = originalFormat;  // Handle the answer as a string
+    } else {
+        // Otherwise, ensure it's treated as a string
+        answer = String(answer);
     }
+
+    // Render the answer
+    output += `
+        <div class="mb-4">
+            <p class="font-semibold">Question ${index + 1}:</p>
+            <p class="whitespace-pre-wrap">${answer}</p>
+        </div>
+    `;
 });
+
 
 
     // Logging the final output before returning
