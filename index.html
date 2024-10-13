@@ -377,7 +377,7 @@ const loadingOverlay = document.getElementById('loading-overlay');
 let applicants = [];
 let filteredApplicants = [];
 let currentPage = 1;
-const itemsPerPage = 10;
+const itemsPerPage = 100;
 let currentUser = null;
 let timelineChart, committeeChart, genderChart, academicYearChart, facultyChart;
 
@@ -626,11 +626,22 @@ document.addEventListener("DOMContentLoaded", function () {
 function renderTable() {
     const tbody = document.getElementById('applicantsTableBody');
     tbody.innerHTML = '';
-const sortedApplicants = filteredApplicants.sort((a, b) => b.Timestamp - a.Timestamp);
+
+    // Sorting the filteredApplicants by Timestamp in descending order
+    const sortedApplicants = filteredApplicants.sort((a, b) => b.Timestamp - a.Timestamp);
+    
+    // Calculate start and end indices for pagination
     const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+    const end = Math.min(start + itemsPerPage, filteredApplicants.length); // Make sure the end doesn't exceed the array length
+    
+    // Get the applicants for the current page
     const pageApplicants = filteredApplicants.slice(start, end);
 
+    // Log start, end, and pageApplicants for debugging
+    console.log(`Page: ${currentPage}, Start: ${start}, End: ${end}`);
+    console.log(pageApplicants);
+
+    // Render the table rows
     pageApplicants.forEach(applicant => {
         const row = `
             <tr>
@@ -650,6 +661,7 @@ const sortedApplicants = filteredApplicants.sort((a, b) => b.Timestamp - a.Times
     updatePagination();
 }
 
+
     
 function formatDate(date) {
     return date.toLocaleString('en-US', {
@@ -660,15 +672,22 @@ function formatDate(date) {
         minute: '2-digit'
     });
 }
-    function updatePagination() {
-        const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
-        startRangeEl.textContent = ((currentPage - 1) * itemsPerPage) + 1;
-        endRangeEl.textContent = Math.min(currentPage * itemsPerPage, filteredApplicants.length);
-        totalEntriesEl.textContent = filteredApplicants.length;
+function updatePagination() {
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage);
 
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage === totalPages;
-    }
+    // Update the displayed range of applicants
+    startRangeEl.textContent = ((currentPage - 1) * itemsPerPage) + 1;
+    endRangeEl.textContent = Math.min(currentPage * itemsPerPage, filteredApplicants.length);
+    totalEntriesEl.textContent = filteredApplicants.length;
+
+    // Disable 'Previous' button if on the first page
+    document.getElementById('prevPage').disabled = currentPage === 1;
+
+    // Disable 'Next' button if on the last page
+    document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+}
+
 
 
 function initializeCharts() {
