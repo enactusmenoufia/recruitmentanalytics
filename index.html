@@ -1013,19 +1013,23 @@ function generateCommitteeQuestions(applicant) {
 
     console.log('Generated Question Keys:', questions);
 
-    let output = '';
-    // Loop through the generated questions and check if the applicant answered them
-    questions.forEach((q, index) => {
-        console.log(`Checking question: ${q}, Value: ${applicant[q]}`);
-        if (applicant[q]) {
-            output += `
-                <div class="mb-4">
-                    <p class="font-semibold">Question ${index + 1}:</p>
-                    <p class="whitespace-pre-wrap">${applicant[q]}</p>
-                </div>
-            `;
-        }
-    });
+  let output = '';
+// Loop through the generated questions and check if the applicant answered them
+questions.forEach((q, index) => {
+    console.log(`Checking question: ${q}, Value: ${applicant[q]}`);
+    if (applicant[q]) {
+        // Explicitly convert the answer to a string to prevent automatic date conversion
+        const answer = String(applicant[q]);
+
+        output += `
+            <div class="mb-4">
+                <p class="font-semibold">Question ${index + 1}:</p>
+                <p class="whitespace-pre-wrap">${answer}</p>
+            </div>
+        `;
+    }
+});
+
 
     // Logging the final output before returning
     console.log('Generated Output:', output);
