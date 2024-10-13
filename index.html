@@ -435,7 +435,7 @@ async function fetchData() {
     const loadingOverlay = document.getElementById('loading-overlay');
     loadingOverlay.style.display = 'flex';
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbz9qFKlJQ9AxBzUNE-ZrXbG_q92r-kjVBDb3D8u3HN7g-Aq7iD64KL6zkIxgimEQA/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyUfe2FmjlUezQv5mithDOBaNHF7ZpSSWwZ_6-1mObUcqp3s7EC4iUg5zVBbkWs6NVf/exec');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
