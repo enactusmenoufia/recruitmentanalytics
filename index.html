@@ -497,9 +497,14 @@ async function fetchData() {
                 
 }));
          // Filter applicants based on user role
-          if (currentUser !== 'admin') {
-            applicants = applicants.filter(a => a.preferredCommittee === currentUser);
-        }
+         if (currentUser !== 'admin') {
+    applicants = applicants.filter(a => {
+        console.log("Preferred Committee (lowercase):", a.preferredCommittee.toLowerCase());
+        console.log("Current User:", currentUser);
+        return a.preferredCommittee.toLowerCase() === currentUser;
+    });
+}
+
 
         console.log('Processed applicants:', applicants);
         
