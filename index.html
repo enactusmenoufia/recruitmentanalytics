@@ -1101,8 +1101,7 @@
                     a.academicYear,
                     a.gender,
                     a.Timestamp,
-                    a.phone.startsWith('0') ? a.phone : '0' + a.phone
-                    // Phone field is already present in the data mapping
+                    a.phone // Phone field is already present in the data mapping
                 ])
             ].map(row => row.join(',')).join('\n');
 
